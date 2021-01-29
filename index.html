@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compassion Tool - Relative Time</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Relative Time</h1>
+
+        <fieldset class="age-box">
+            <div>
+                <label>My Age</label>
+                <input id="my-age" type="number" value="30" placeholder="in years" oninput="update()" />
+            </div>
+            <div>
+                <label>Their Age</label>
+                <input id="their-age" type="number" value="5" placeholder="in years" oninput="update()" />
+            </div>
+        </fieldset>
+
+        <fieldset class="time-box">
+            <input id="number" type="number" value="5" oninput="update()" />
+            <select id="unit" oninput="update()" >
+                <option value="seconds">Seconds</option>
+                <option value="minutes">Minutes</option>
+                <option value="hours" selected>Hours</option>
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+            </select>
+        </fieldset>
+
+        <h2>to me is like</h2>
+
+        <p id="relative-time-span">(time loading)</p>
+        
+        <h2>to them.</h2>
+        
+        <footer>
+            <hr/>
+        </footer>
+
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
