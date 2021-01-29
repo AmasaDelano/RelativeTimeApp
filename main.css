@@ -1,0 +1,28 @@
+fieldset {
+    border: none
+}
+
+.age-box {
+    display: flex;
+}
+
+.age-box div {
+    flex-basis: 50%;
+    text-align: center;
+}
+
+.time-box,
+h1,
+h2,
+p {
+    text-align: center;
+}
+
+fieldset input,
+fieldset select,
+label,
+h1,
+h2,
+p {
+    font-size: 22px;
+}
