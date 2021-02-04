@@ -1,5 +1,6 @@
 fieldset {
-    border: none
+    border: none;
+    padding: 0;
 }
 
 .age-box input,
@@ -62,4 +63,8 @@ p {
     .time-box {
         margin-top: 20px;
     }
+}
+
+.message {
+    margin: 20px 0;
 }
