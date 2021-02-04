@@ -68,3 +68,15 @@ p {
 .message {
     margin: 20px 0;
 }
+
+small {
+    font-size: 18px;
+    display: block;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.container {
+    margin: 0 5px;
+}

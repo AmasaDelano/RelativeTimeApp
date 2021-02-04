@@ -2,7 +2,7 @@
 
 (function () {
 
-    // GENERAL CODE
+    // GENERAL FUNCTIONS
 
     Number.isNaN = Number.isNaN || function(value) {
         return typeof value === "number" && isNaN(value);
@@ -16,7 +16,7 @@
         }
     }
 
-    // APPLICATION CODE
+    // APPLICATION FUNCTIONS
 
     var timeUnitValues = {
         "seconds": 1
@@ -147,12 +147,13 @@
     window.update = function onUpdate() {
         var viewModel = getViewModel();
 
-        var relativeTime = getRelativeTimeSpan(viewModel);
+        (function setRelativeTimeResult(viewModel) {
+            var relativeTime = getRelativeTimeSpan(viewModel);
+            document.getElementById("relative-time-span").innerText = relativeTime;
+        }(viewModel));
 
-        document.getElementById("relative-time-span").innerText = relativeTime;
-
-        var s = viewModel.number === 1 ? "" : "s";
-        (function makeUnitOptionsPluralOrSingular(s) {
+        (function makeUnitOptionsPluralOrSingular(viewModel) {
+            var s = viewModel.number === 1 ? "" : "s";
             var options = document.getElementById("unit").options;
             Array.prototype.forEach.call(options, function (option) {
                 if (option.text[option.text.length - 1] === "s") {
@@ -161,8 +162,36 @@
     
                 option.text = option.text + s;
             });
-        }(s));
+        }(viewModel));
+
+        (function updateUrl(viewModel) {
+            window.location.hash = [viewModel.myAge, viewModel.theirAge, viewModel.number, viewModel.unit].join("+");
+        }(viewModel));
     };
+
+    // SETUP THE PAGE
+
+    (function readViewModelFromUrl() {
+        function setNumber(id, value) {
+            var float = parseFloat(value);
+            if (Number.isNaN(float)) {
+                return;
+            }
+
+            document.getElementById(id).value = value;
+        }
+
+        // .substring(1) SPLITS THE '#' CHARACTER OFF THE BEGINNING.
+        var hashData = window.location.hash.substring(1).split("+");
+        if (hashData.length !== 4) {
+            return;
+        }
+
+        setNumber("my-age", hashData[0]);
+        setNumber("their-age", hashData[1]);
+        setNumber("number", hashData[2]);
+        document.getElementById("unit").value = hashData[3];
+    }());
     update();
 
 }());
