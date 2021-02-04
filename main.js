@@ -2,11 +2,21 @@
 
 (function () {
 
+    // GENERAL CODE
+
+    Number.isNaN = Number.isNaN || function(value) {
+        return typeof value === "number" && isNaN(value);
+    }
+
+    window.debug = false;
+
     function assert(condition, message) {
-        if (!condition) {
+        if (!condition && window.debug) {
             throw new Error(message);
         }
     }
+
+    // APPLICATION CODE
 
     var timeUnitValues = {
         "seconds": 1
@@ -19,16 +29,22 @@
     timeUnitValues.years = timeUnitValues.months * 12;
 
     function getRelativeTimeSpan(viewModel) {
-        function calculateRelativeTimeSpan(theirSeconds, myAge, theirAge) {
+
+        var theirSeconds = viewModel.number * timeUnitValues[viewModel.unit];
+
+        var relativeSeconds = (function calculateRelativeTimeSpan(theirSeconds, myAge, theirAge) {
             var ratio = myAge / theirAge
             var mySeconds = theirSeconds * ratio
             return mySeconds
-        }
+        }(theirSeconds, viewModel.myAge, viewModel.theirAge));
 
-        function formatSeconds(seconds) {
+        var formattedRelativeSeconds = (function formatSeconds(seconds) {
 
-            function format(time, label) {
-                function getName(number) {
+            function format(number, label) {
+
+                var roundedNumber = Math.floor(number);
+
+                var name = (function (roundedNumber) {
                     var names = [
                         "zero",
                         "one",
@@ -40,17 +56,19 @@
                         "seven",
                         "eight",
                         "nine"
-                    ]
-                    var roundedNumber = Math.floor(number)
+                    ];
                     if (roundedNumber >= names.length) {
                         return roundedNumber.toString();
                     }
-                    
-                    return names[roundedNumber]
-                }
-                    
-                var s = time >= 2 ? "s" : ""
-                return getName(time) + " " + label + s
+                    return names[roundedNumber];
+                }(roundedNumber));
+
+                var s = roundedNumber === 1 ? "" : "s"
+                return name + " " + label + s
+            }
+
+            if (Number.isNaN(seconds) || seconds < 0) {
+                return "(loading)";
             }
             
             // Get an int() number of seconds
@@ -94,14 +112,7 @@
             var years = months / 12;
         
             return format(years, "year");
-        }
-
-        // CALCULATE THIS USING timeUnitValues ABOVE, AND THE viewModel
-        var theirSeconds = viewModel.number * timeUnitValues[viewModel.unit];
-
-        var relativeSeconds = calculateRelativeTimeSpan(theirSeconds, viewModel.myAge, viewModel.theirAge);
-
-        var formattedRelativeSeconds = formatSeconds(relativeSeconds);
+        }(relativeSeconds));
 
         return formattedRelativeSeconds;
     }
@@ -109,7 +120,7 @@
     function getViewModel() {
         function getNumber(id) {
             var number = document.getElementById(id).value;
-            number = parseInt(number, 10);
+            number = parseFloat(number);
             return number;
         }
 
@@ -139,6 +150,18 @@
         var relativeTime = getRelativeTimeSpan(viewModel);
 
         document.getElementById("relative-time-span").innerText = relativeTime;
+
+        var s = viewModel.number === 1 ? "" : "s";
+        (function makeUnitOptionsPluralOrSingular(s) {
+            var options = document.getElementById("unit").options;
+            Array.prototype.forEach.call(options, function (option) {
+                if (option.text[option.text.length - 1] === "s") {
+                    option.text = option.text.substring(0, option.text.length - 1);
+                }
+    
+                option.text = option.text + s;
+            });
+        }(s));
     };
     update();
 
