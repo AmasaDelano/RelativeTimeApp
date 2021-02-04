@@ -2,13 +2,19 @@ fieldset {
     border: none
 }
 
-.age-box {
-    display: flex;
+.age-box input,
+.age-box label {
+    font-size: 22px;
+    font-family: Helvetica, Arial, sans-serif
 }
 
-.age-box div {
-    flex-basis: 50%;
-    text-align: center;
+.time-box input,
+.time-box select,
+h1,
+h2,
+p {
+    font-size: 32px;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 .time-box,
@@ -18,11 +24,42 @@ p {
     text-align: center;
 }
 
-fieldset input,
-fieldset select,
-label,
-h1,
-h2,
-p {
-    font-size: 22px;
+/* AGE BOX */
+
+.age-box {
+    display: flex;
+}
+
+.age-box .age {
+    flex-basis: 50%;
+    text-align: center;
+}
+
+.age-box .age label,
+.age-box .age input {
+    display: block;
+    margin: 0 auto 5px;
+}
+
+@media (min-width: 400px) {
+    .age-box .age label,
+    .age-box .age input {
+        display: inline-block;
+    }
+}
+
+/* OTHER */
+
+#relative-time-span {
+    font-size: 42px;
+}
+
+.time-box {
+    margin-top: 10px;
+}
+
+@media (min-width: 400px) {
+    .time-box {
+        margin-top: 20px;
+    }
 }
