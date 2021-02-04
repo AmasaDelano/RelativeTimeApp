@@ -70,7 +70,7 @@ p {
 }
 
 small {
-    font-size: 18px;
+    font-size: 16px;
     display: block;
     text-align: center;
     font-style: italic;
@@ -79,4 +79,8 @@ small {
 
 .container {
     margin: 0 5px;
+}
+
+h1 {
+    margin-bottom: 5px;;
 }
