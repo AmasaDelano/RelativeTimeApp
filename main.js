@@ -165,13 +165,18 @@
         }(viewModel));
 
         (function updateUrl(viewModel) {
-            window.location.hash = [viewModel.myAge, viewModel.theirAge, viewModel.number, viewModel.unit].join("+");
+            var newHash = [viewModel.myAge, viewModel.theirAge, viewModel.number, viewModel.unit].join("+");
+            if (window.location.hash) {
+                window.location.hash = newHash;
+            } else {
+                history.replaceState(undefined, undefined, "#" + newHash)
+            }
         }(viewModel));
     };
 
     // SETUP THE PAGE
 
-    (function readViewModelFromUrl() {
+    function readViewModelFromUrl() {
         function setNumber(id, value) {
             var float = parseFloat(value);
             if (Number.isNaN(float)) {
@@ -183,15 +188,18 @@
 
         // .substring(1) SPLITS THE '#' CHARACTER OFF THE BEGINNING.
         var hashData = window.location.hash.substring(1).split("+");
-        if (hashData.length !== 4) {
-            return;
+        if (hashData.length === 4) {
+            setNumber("my-age", hashData[0]);
+            setNumber("their-age", hashData[1]);
+            setNumber("number", hashData[2]);
+            document.getElementById("unit").value = hashData[3];
         }
 
-        setNumber("my-age", hashData[0]);
-        setNumber("their-age", hashData[1]);
-        setNumber("number", hashData[2]);
-        document.getElementById("unit").value = hashData[3];
-    }());
-    update();
+        update();
+    }
+
+    readViewModelFromUrl();
+
+    window.addEventListener("hashchange", readViewModelFromUrl, false);
 
 }());
